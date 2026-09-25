@@ -1,6 +1,25 @@
-export const ERROR_MESSAGES = {
+export const ERROR_MESSAGES: Record<string, string> = {
   AUTH_REQUIRED: "请先登录后再继续操作",
+  AUTH_FAILED: "用户名或密码错误",
   RBAC_DENIED: "当前角色没有执行该动作的权限",
   VALIDATION_FAILED: "表单字段缺失或格式错误",
-  RATE_LIMITED: "请求过于频繁，请稍后再试"
+  RATE_LIMITED: "请求过于频繁，请稍后再试",
+  NOT_FOUND: "请求的资源不存在",
+  BUILDING_NOT_FOUND: "楼栋不存在",
+  DEVICE_NOT_FOUND: "消防设备不存在",
+  DEVICE_CODE_DUPLICATED: "设备编号已存在",
+  TASK_NOT_FOUND: "巡检任务不存在",
+  TASK_NOT_CLAIMABLE: "任务当前状态不可领取",
+  TASK_NOT_EDITABLE: "任务当前状态不可填写",
+  TASK_NOT_SUBMITTABLE: "任务当前状态不可提交",
+  TASK_NOT_REVIEWABLE: "任务当前状态不可复核",
+  CHECKLIST_INCOMPLETE: "检查项未全部完成，无法提交",
+  RESULT_NOT_FOUND: "巡检结果不存在",
+  RESULT_NOT_ABNORMAL: "仅异常结果可以派单",
+  TICKET_NOT_FOUND: "隐患整改单不存在",
+  TICKET_ALREADY_EXISTS: "该异常结果已生成整改单",
+  TICKET_NOT_RECTIFIABLE: "整改单当前状态不可填写整改",
+  TICKET_NOT_CLOSABLE: "整改单当前状态不可复验关闭",
+  USER_NOT_FOUND: "责任人不存在",
+  INTERNAL_ERROR: "服务器内部错误",
 };

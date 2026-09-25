@@ -1,8 +1,17 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import type { HazardTicket } from "../types/HazardTicket";
 
-export function useHazardFlow<T>(rows: T[] = []) {
-  const [page, setPage] = useState(1);
-  const pageSize = 8;
-  const pageRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
-  return { page, setPage, pageSize, pageRows, total: rows.length };
+/** 隐患整改流：按 ASSIGNED -> RECTIFIED -> CLOSED 分组并标记逾期，驱动隐患页 Tab 与操作按钮。 */
+export function useHazardFlow(rows: HazardTicket[] = []) {
+  return useMemo(() => {
+    const open = rows.filter((row) => row.rectify_status !== "CLOSED");
+    const assigned = rows.filter((row) => row.rectify_status === "ASSIGNED");
+    const rectified = rows.filter((row) => row.rectify_status === "RECTIFIED");
+    const closed = rows.filter((row) => row.rectify_status === "CLOSED");
+    const overdue = open.filter((row) => row.is_overdue);
+    const highRiskOpen = open.filter((row) =>
+      row.severity === "HIGH" || row.severity === "CRITICAL"
+    );
+    return { open, assigned, rectified, closed, overdue, highRiskOpen };
+  }, [rows]);
 }

@@ -1,16 +1,15 @@
-import type { InspectionResult } from "../types/InspectionResult";
+import type { ResultDraft } from "../types/InspectionTask";
 
-export const createDefaultInspectionResult = (overrides: Partial<InspectionResult> = {}): InspectionResult => ({
-  id: 1 as never,
-  task_id: 1 as never,
-  device_id: 1 as never,
-  item_code: "item code 1" as never,
-  result_status: "IN_PROGRESS" as never,
-  measured_value: "measured value 1" as never,
-  photo_url: "/mock/photo_url-1.png" as never,
-  note: "note 1" as never,
+/** 单项检查结果表单默认结构。 */
+export const createInspectionResultForm = (
+  overrides: Partial<ResultDraft> & { device_id: number; item_code: string }
+): ResultDraft => ({
+  result_status: "NORMAL",
+  measured_value: "",
+  photo_url: "",
+  note: "",
   ...overrides
 });
 
-export const createInspectionResultForm = createDefaultInspectionResult;
-export const createInspectionResultResponse = createDefaultInspectionResult;
+export const createDefaultInspectionResult = createInspectionResultForm;
+export const createInspectionResultResponse = createInspectionResultForm;

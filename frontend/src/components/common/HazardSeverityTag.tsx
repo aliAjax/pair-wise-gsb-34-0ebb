@@ -1,5 +1,8 @@
-import { StatusBadge } from "./StatusBadge";
+import { HazardSeverityText } from "../../constants/HazardSeverity";
 
-export function HazardSeverityTag({ title = "HazardSeverityTag", value = "READY" }: { title?: string; value?: string }) {
-  return <div className="shared-widget"><strong>{title}</strong><StatusBadge value={value} /></div>;
+export function HazardSeverityTag({ severity }: { severity: string }) {
+  const text = (HazardSeverityText as Record<string, string>)[severity] ?? severity;
+  return (
+    <span className={"badge severity " + String(severity).toLowerCase()}>{text}</span>
+  );
 }

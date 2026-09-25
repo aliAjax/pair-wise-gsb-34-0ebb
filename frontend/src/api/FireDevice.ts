@@ -1,21 +1,30 @@
-import { mockData } from "../mocks/seedData";
+import { get, post, withQuery } from "./http";
 import type { FireDevice } from "../types/FireDevice";
+import type { InspectionResult } from "../types/InspectionResult";
 
 const endpoint = "/api/fire-device";
 
-export async function listFireDevice(): Promise<FireDevice[]> {
-  if (typeof fetch !== "undefined" && endpoint.startsWith("/api") && true) {
-    try {
-      const res = await fetch(endpoint);
-      if (res.ok) return await res.json();
-    } catch {
-      // Local mock fallback keeps the UI available during offline review.
-    }
-  }
-  return [...(mockData.fireDevice as unknown as FireDevice[])];
+export interface DeviceFilters {
+  building_id?: number;
+  device_type?: string;
+  status?: string;
+  floor?: string;
 }
 
-export async function saveFireDevice(payload: FireDevice) {
-  console.info("save FireDevice", payload);
-  return payload;
+export type FireDeviceForm = Omit<FireDevice, "id" | "building_name" | "maintenance_due">;
+
+export async function listFireDevice(filters: DeviceFilters = {}): Promise<FireDevice[]> {
+  return get<FireDevice[]>(withQuery(endpoint, filters));
+}
+
+export async function getFireDevice(id: number): Promise<FireDevice> {
+  return get<FireDevice>(`${endpoint}/${id}`);
+}
+
+export async function saveFireDevice(payload: FireDeviceForm): Promise<FireDevice> {
+  return post<FireDevice>(endpoint, payload);
+}
+
+export async function listDeviceResults(deviceId: number): Promise<InspectionResult[]> {
+  return get<InspectionResult[]>(`${endpoint}/${deviceId}/results`);
 }

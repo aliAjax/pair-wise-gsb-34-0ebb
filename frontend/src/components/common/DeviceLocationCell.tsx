@@ -1,5 +1,16 @@
-import { StatusBadge } from "./StatusBadge";
-
-export function DeviceLocationCell({ title = "DeviceLocationCell", value = "READY" }: { title?: string; value?: string }) {
-  return <div className="shared-widget"><strong>{title}</strong><StatusBadge value={value} /></div>;
+export function DeviceLocationCell({
+  buildingName,
+  floor,
+  locationDesc,
+}: {
+  buildingName?: string | null;
+  floor: string;
+  locationDesc: string;
+}) {
+  return (
+    <div className="location-cell">
+      <strong>{buildingName ?? "-"}</strong>
+      <span>{floor} · {locationDesc}</span>
+    </div>
+  );
 }

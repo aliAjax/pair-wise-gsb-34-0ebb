@@ -1,16 +1,15 @@
 import type { InspectionTask } from "../types/InspectionTask";
 
-export const createDefaultInspectionTask = (overrides: Partial<InspectionTask> = {}): InspectionTask => ({
-  id: 1 as never,
-  building_id: 1 as never,
-  inspector_id: 1 as never,
-  plan_date: "2026-06-11T09:00:00Z" as never,
-  task_type: "HYDRANT" as never,
-  status: "IN_PROGRESS" as never,
-  checklist_version: "checklist version 1" as never,
-  finished_at: "2026-06-11T09:00:00Z" as never,
+/** 巡检计划表单默认结构。 */
+export const createInspectionTaskForm = (
+  overrides: Partial<Omit<InspectionTask, "id" | "inspector_id" | "status" | "finished_at" | "building_name" | "inspector_name" | "progress">> = {}
+) => ({
+  building_id: 0,
+  plan_date: "",
+  task_type: "EXTINGUISHER",
+  checklist_version: "v1.0",
   ...overrides
 });
 
-export const createInspectionTaskForm = createDefaultInspectionTask;
-export const createInspectionTaskResponse = createDefaultInspectionTask;
+export const createDefaultInspectionTask = createInspectionTaskForm;
+export const createInspectionTaskResponse = createInspectionTaskForm;

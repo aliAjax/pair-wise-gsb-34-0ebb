@@ -1,21 +1,45 @@
-import { mockData } from "../mocks/seedData";
-import type { InspectionTask } from "../types/InspectionTask";
+import { get, post, put, withQuery } from "./http";
+import type { ResultDraft, InspectionTask, TaskDetail } from "../types/InspectionTask";
 
 const endpoint = "/api/inspection-task";
 
-export async function listInspectionTask(): Promise<InspectionTask[]> {
-  if (typeof fetch !== "undefined" && endpoint.startsWith("/api") && true) {
-    try {
-      const res = await fetch(endpoint);
-      if (res.ok) return await res.json();
-    } catch {
-      // Local mock fallback keeps the UI available during offline review.
-    }
-  }
-  return [...(mockData.inspectionTask as unknown as InspectionTask[])];
+export interface TaskFilters {
+  status?: string;
+  building_id?: number;
+  inspector_id?: number;
 }
 
-export async function saveInspectionTask(payload: InspectionTask) {
-  console.info("save InspectionTask", payload);
-  return payload;
+export interface TaskForm {
+  building_id: number;
+  plan_date: string;
+  task_type: string;
+  checklist_version?: string;
+}
+
+export async function listInspectionTask(filters: TaskFilters = {}): Promise<InspectionTask[]> {
+  return get<InspectionTask[]>(withQuery(endpoint, filters));
+}
+
+export async function getInspectionTask(id: number): Promise<TaskDetail> {
+  return get<TaskDetail>(`${endpoint}/${id}`);
+}
+
+export async function saveInspectionTask(payload: TaskForm): Promise<InspectionTask> {
+  return post<InspectionTask>(endpoint, payload);
+}
+
+export async function claimTask(id: number): Promise<TaskDetail> {
+  return post<TaskDetail>(`${endpoint}/${id}/claim`);
+}
+
+export async function saveTaskResults(id: number, results: ResultDraft[]): Promise<TaskDetail> {
+  return put<TaskDetail>(`${endpoint}/${id}/results`, { results });
+}
+
+export async function submitTask(id: number): Promise<TaskDetail> {
+  return post<TaskDetail>(`${endpoint}/${id}/submit`);
+}
+
+export async function reviewTask(id: number): Promise<TaskDetail> {
+  return post<TaskDetail>(`${endpoint}/${id}/review`);
 }

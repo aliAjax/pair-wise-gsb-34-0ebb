@@ -1,0 +1,1 @@
+RectifyStatus = ["ASSIGNED", "RECTIFIED", "CLOSED"]

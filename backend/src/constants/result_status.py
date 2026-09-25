@@ -1,0 +1,1 @@
+ResultStatus = ["NORMAL", "ABNORMAL"]

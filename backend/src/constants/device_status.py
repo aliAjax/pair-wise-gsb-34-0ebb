@@ -1,0 +1,1 @@
+DeviceStatus = ["NORMAL", "FAULT", "MAINTENANCE", "SCRAPPED"]
