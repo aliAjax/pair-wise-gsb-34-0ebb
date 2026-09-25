@@ -1,10 +1,14 @@
+import type { HazardSeverity } from "./HazardSeverity";
+import type { RectifyStatus } from "./RectifyStatus";
+
 export interface HazardTicket {
   id: number;
   result_id: number;
-  severity: string;
+  severity: HazardSeverity;
   owner_id: number;
-  deadline: string;
-  rectify_status: string;
+  deadline: string | null;
+  rectify_status: RectifyStatus;
   rectify_note: string;
-  closed_at: string;
+  closed_at: string | null;
+  created_at: string | null;
 }

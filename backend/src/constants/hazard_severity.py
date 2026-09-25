@@ -1,1 +1,3 @@
-HazardSeverity = ["LOW","MEDIUM","HIGH","CRITICAL"]
+HazardSeverity = ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+
+HIGH_RISK_SEVERITY = ["HIGH", "CRITICAL"]

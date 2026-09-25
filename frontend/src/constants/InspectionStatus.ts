@@ -1,3 +1,11 @@
-export const InspectionStatus = ["PLANNED","IN_PROGRESS","SUBMITTED","REVIEWED","OVERDUE"] as const;
-export type InspectionStatus = (typeof InspectionStatus)[number];
-export const InspectionStatusText: Record<InspectionStatus, string> = Object.fromEntries(InspectionStatus.map((value) => [value, value.replace(/_/g, " ")])) as Record<InspectionStatus, string>;
+import type { InspectionStatus } from "../types/InspectionStatus";
+
+export const INSPECTION_STATUSES: InspectionStatus[] = ["PLANNED", "IN_PROGRESS", "SUBMITTED", "REVIEWED", "OVERDUE"];
+
+export const INSPECTION_STATUS_TEXT: Record<InspectionStatus, string> = {
+  PLANNED: "计划中",
+  IN_PROGRESS: "进行中",
+  SUBMITTED: "已提交",
+  REVIEWED: "已复核",
+  OVERDUE: "已逾期",
+};

@@ -1,15 +1,24 @@
 import type { Building } from "../types/Building";
 
 export const createDefaultBuilding = (overrides: Partial<Building> = {}): Building => ({
-  id: 1 as never,
-  name: "name 1" as never,
-  campus: "campus 1" as never,
-  floor_count: "floor count 1" as never,
-  fire_grade: "fire grade 1" as never,
-  manager_id: 1 as never,
-  address_code: "address code 1" as never,
+  id: 0,
+  name: "",
+  campus: "东区",
+  floor_count: 1,
+  fire_grade: "二级",
+  manager_id: 1,
+  address_code: "",
   ...overrides
 });
 
-export const createBuildingForm = createDefaultBuilding;
+// 新建楼栋表单初始值
+export const createBuildingForm = (): Partial<Building> => ({
+  name: "",
+  campus: "东区",
+  floor_count: 1,
+  fire_grade: "二级",
+  manager_id: 1,
+  address_code: ""
+});
+
 export const createBuildingResponse = createDefaultBuilding;

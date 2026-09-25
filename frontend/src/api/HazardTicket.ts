@@ -1,21 +1,33 @@
-import { mockData } from "../mocks/seedData";
+import { request } from "./client";
 import type { HazardTicket } from "../types/HazardTicket";
 
 const endpoint = "/api/hazard-ticket";
 
-export async function listHazardTicket(): Promise<HazardTicket[]> {
-  if (typeof fetch !== "undefined" && endpoint.startsWith("/api") && true) {
-    try {
-      const res = await fetch(endpoint);
-      if (res.ok) return await res.json();
-    } catch {
-      // Local mock fallback keeps the UI available during offline review.
-    }
-  }
-  return [...(mockData.hazardTicket as unknown as HazardTicket[])];
+export interface HazardTicketPayload {
+  result_id?: number;
+  severity?: string;
+  owner_id?: number;
+  deadline?: string;
 }
 
-export async function saveHazardTicket(payload: HazardTicket) {
-  console.info("save HazardTicket", payload);
-  return payload;
+export interface HazardTicketFilter {
+  rectify_status?: string;
+  severity?: string;
+  result_id?: number;
+}
+
+export async function listHazardTicket(filter: HazardTicketFilter = {}): Promise<HazardTicket[]> {
+  return request(endpoint, { params: { ...filter } });
+}
+
+export async function dispatchHazardTicket(payload: HazardTicketPayload): Promise<HazardTicket> {
+  return request(endpoint, { method: "POST", body: payload });
+}
+
+export async function rectifyHazardTicket(id: number, rectify_note: string): Promise<HazardTicket> {
+  return request(`${endpoint}/${id}/rectify`, { method: "POST", body: { rectify_note } });
+}
+
+export async function closeHazardTicket(id: number): Promise<HazardTicket> {
+  return request(`${endpoint}/${id}/close`, { method: "POST" });
 }

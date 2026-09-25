@@ -1,21 +1,26 @@
-import { mockData } from "../mocks/seedData";
+import { request } from "./client";
 import type { InspectionResult } from "../types/InspectionResult";
 
 const endpoint = "/api/inspection-result";
 
-export async function listInspectionResult(): Promise<InspectionResult[]> {
-  if (typeof fetch !== "undefined" && endpoint.startsWith("/api") && true) {
-    try {
-      const res = await fetch(endpoint);
-      if (res.ok) return await res.json();
-    } catch {
-      // Local mock fallback keeps the UI available during offline review.
-    }
-  }
-  return [...(mockData.inspectionResult as unknown as InspectionResult[])];
+export interface InspectionResultPayload {
+  result_status?: string;
+  measured_value?: string;
+  photo_url?: string;
+  note?: string;
 }
 
-export async function saveInspectionResult(payload: InspectionResult) {
-  console.info("save InspectionResult", payload);
-  return payload;
+export interface InspectionResultFilter {
+  task_id?: number;
+  device_id?: number;
+  result_status?: string;
+  unticketed?: boolean;
+}
+
+export async function listInspectionResult(filter: InspectionResultFilter = {}): Promise<InspectionResult[]> {
+  return request(endpoint, { params: { ...filter } });
+}
+
+export async function updateInspectionResult(id: number, payload: InspectionResultPayload): Promise<InspectionResult> {
+  return request(`${endpoint}/${id}`, { method: "PUT", body: payload });
 }

@@ -1,21 +1,37 @@
-import { mockData } from "../mocks/seedData";
+import { request } from "./client";
 import type { InspectionTask } from "../types/InspectionTask";
 
 const endpoint = "/api/inspection-task";
 
-export async function listInspectionTask(): Promise<InspectionTask[]> {
-  if (typeof fetch !== "undefined" && endpoint.startsWith("/api") && true) {
-    try {
-      const res = await fetch(endpoint);
-      if (res.ok) return await res.json();
-    } catch {
-      // Local mock fallback keeps the UI available during offline review.
-    }
-  }
-  return [...(mockData.inspectionTask as unknown as InspectionTask[])];
+export interface InspectionTaskPayload {
+  building_id?: number;
+  plan_date?: string;
+  task_type?: string;
+  checklist_version?: string;
 }
 
-export async function saveInspectionTask(payload: InspectionTask) {
-  console.info("save InspectionTask", payload);
-  return payload;
+export interface InspectionTaskFilter {
+  building_id?: number;
+  status?: string;
+  inspector_id?: number;
+}
+
+export async function listInspectionTask(filter: InspectionTaskFilter = {}): Promise<InspectionTask[]> {
+  return request(endpoint, { params: { ...filter } });
+}
+
+export async function createInspectionTask(payload: InspectionTaskPayload): Promise<InspectionTask> {
+  return request(endpoint, { method: "POST", body: payload });
+}
+
+export async function claimInspectionTask(id: number): Promise<InspectionTask> {
+  return request(`${endpoint}/${id}/claim`, { method: "POST" });
+}
+
+export async function submitInspectionTask(id: number): Promise<InspectionTask> {
+  return request(`${endpoint}/${id}/submit`, { method: "POST" });
+}
+
+export async function reviewInspectionTask(id: number): Promise<InspectionTask> {
+  return request(`${endpoint}/${id}/review`, { method: "POST" });
 }
